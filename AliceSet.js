@@ -6,10 +6,6 @@
 //   Author: Aizat
 //   Made in Indonesia
 //
-//   Sensitive config moved to lib/config.js
-//   Edit tokens/apikeys di lib/config.js atau
-//   set via environment variable (.env / Pterodactyl)
-//
 //═══════════════════════════════════════════════//
 
 
@@ -39,11 +35,7 @@ const Styles = (text, style = 1) => {
   });
   return output.join('');
 };
-
-//═══════════════════════════════════════════════//
-//  LOAD SENSITIVE CONFIG FROM lib/config.js     //
-//═══════════════════════════════════════════════//
-const config = require('./lib/config')
+//≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
 
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
 // SETUP \\
@@ -52,16 +44,16 @@ const config = require('./lib/config')
 global.prefa = ['','.'] 
 global.usePairingCode = true
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
-// Set owner (from lib/config.js)
-global.ownername = config.ownerName
-global.owner = [config.ownerNumber]
+// Set owner
+global.ownername = 'Aizat'
+global.owner = ['6285135441066']
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
 // Set Thumb Menggunakan Url
 global.thumb = "https://files.catbox.moe/qbcebp.jpg"
 global.thumbnailReply = "https://files.catbox.moe/zw2p5v.jpg"
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
-// Set bot (from lib/config.js)
-global.AliceBot = config.botNumber
+// Set bot
+global.AliceBot = '6282234014145'
 global.pairing = 'ALICEV16' //set pair
 global.botname = 'Alice Asistent'
 global.version = '16.0.0'
@@ -82,8 +74,8 @@ global.soundcool = 'https://files.catbox.moe/lrmym6.mp3'
 global.packname = 'ᴘowᴇʀᴇᴅ ʙʏ ᴀʟιcᴇ ᴀsιsтᴇɴт'
 global.author = '© Aizat'
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
-// Payment (from lib/config.js)
-global.dana = config.danaNumber
+// Payment
+global.dana = '085774293594'
 global.danajpg = "https://files.catbox.moe/h9vyzb.jpg"
 global.qris = "https://files.catbox.moe/gjrh98.jpg"
 global.qrisjpg = 'https://files.catbox.moe/gjrh98.jpg'
@@ -108,26 +100,26 @@ global.setwelcome = true
 global.autoshalat = true
 global.antibot = true
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
-// Apikey Premium (from lib/config.js)
+// Apikey Premium (bisa di-set via env variable atau edit langsung)
 global.api = {
-    alice: config.apiAlice,
-    velyn: config.apiVelyn
+    alice: process.env.API_ALICE || 'aliceezuberg',
+    velyn: process.env.API_VELYN || 'velynapis'
 }
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
-// Settings Api Panel Pterodactyl (from lib/config.js)
-global.egg = config.pteroEgg
-global.nestid = config.pteroNestId
-global.loc = config.pteroLoc
-global.domain = config.pteroDomain
-global.apikeyplta = config.pteroApiKeyApp
-global.capikey = config.pteroApiKeyClient
+// Settings Api Panel Pterodactyl
+global.egg = "15" // Egg ID
+global.nestid = "5" // nest ID
+global.loc = "1" // Location ID
+global.domain = "https://"
+global.apikeyplta = "" //ptla
+global.capikey = "" //ptlc
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
-// Orkut Set (from lib/config.js)
+// Orkut Set Pnya lu sendiri
 global.orkut = {
-  username: config.orkutUsername,
-  token: config.orkutToken,
-  id: config.orkutId,
-  codeqr: config.orkutQris
+  username: "xxyyroo",
+  token: "2158086:TDgzO7lk1G2A8RVuiKQJrN5EmUZoShB3",
+  id: "2158086",
+  codeqr: '00020101021126670016COM.NOBUBANK.WWW01189360050300000879140214508386628888070303UMI51440014ID.CO.QRIS.WWW0215ID20253689001840303UMI5204541153033605802ID5921XYROO STORE OK21580866013JAKARTA UTARA61051411062070703A016304D923'
 }
 //≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠\\
 global.delayPushkontak = 6000
