@@ -5,3 +5,4 @@ config.js
 *.log
 .DS_Store
 Thumbs.db
+lib/.lockout
