@@ -337,14 +337,8 @@ setInterval(async () => {
 // ════════════════════════════════════════════════
 // START
 // ════════════════════════════════════════════════
-console.log(chalk.cyan(`
-╔══════════════════════════════════════╗
-║  Alice Multi Device - Recoded       ║
-║  Plugin-based Architecture           ║
-║  (c) Aizat 2022 - 2026              ║
-╚══════════════════════════════════════╝
-`))
-
+const { printBanner } = require('./lib/auth')
+printBanner()
 connectToWhatsApp()
 
 // ════════════════════════════════════════════════
