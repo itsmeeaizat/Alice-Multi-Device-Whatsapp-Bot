@@ -1,11 +1,12 @@
 // ALICE MULTI DEVICE, AIZAT, MADE IN INDONESIA
 //═══════════════════════════════════════════════//
-//           🚀 Alice Assistent - Recoded & Clean               //
+//           Alice Assistent - Recoded & Clean    //
 //═══════════════════════════════════════════════//
 //
 //   Clean connection handler - no more obfuscation
 //   Plugin-based architecture - all cases converted to plugins
 //   Modular middleware system
+//   Pre-pairing auth guard (lib/auth.js)
 //
 //═══════════════════════════════════════════════//
 
@@ -30,6 +31,9 @@ const { Boom } = require('@hapi/boom')
 
 // Load settings first
 require('./AliceSet')
+
+// Load auth guard
+const { authenticate } = require('./lib/auth')
 
 // Load message handler
 const AliceHandler = require('./handler')
@@ -90,6 +94,7 @@ global.db.save = function () {
 let sock = null
 let retryCount = 0
 const MAX_RETRIES = 10
+let isAuthPassed = false
 
 async function connectToWhatsApp() {
     const { state, saveCreds } = await useMultiFileAuthState('./AliceSession')
@@ -121,9 +126,19 @@ async function connectToWhatsApp() {
     store.bind(sock.ev)
 
     // ════════════════════════════════════════════════
-    // PAIRING CODE
+    // PAIRING CODE (with auth guard)
     // ════════════════════════════════════════════════
     if (global.usePairingCode && !sock.authState.creds.registered) {
+        // Auth check - only if not already passed
+        if (!isAuthPassed) {
+            const authOk = await authenticate()
+            if (!authOk) {
+                console.log(chalk.red('\n  Bot dihentikan. Restart untuk mencoba lagi.\n'))
+                process.exit(1)
+            }
+            isAuthPassed = true
+        }
+
         const phoneNumber = global.AliceBot
         if (PHONENUMBER_MCC && !Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
             console.log(chalk.red('Phone number must start with a valid MCC'))
@@ -163,11 +178,12 @@ async function connectToWhatsApp() {
             }
         } else if (connection === 'open') {
             retryCount = 0
+            isAuthPassed = false // Reset on new session
             console.log(chalk.greenBright(`
 ╔══════════════════════════════════════╗
-║  ✅ Alice Assistent Connected!       ║
-║  Bot: ${global.botname}              ║
-║  Version: ${global.version}          ║
+║  Alice Assistent Connected!          ║
+║  Bot: ${global.botname || 'Alice MD'}              ║
+║  Owner: ${global.ownername || 'Aizat'}             ║
 ╚══════════════════════════════════════╝
             `))
         }
@@ -203,7 +219,7 @@ async function connectToWhatsApp() {
                     if (call.isGroup) continue
                     await sock.rejectCall(call.id, call.from)
                     await sock.sendMessage(call.from, {
-                        text: `🚫 Maaf, saya tidak menerima panggilan.\n\nKetik ${global.prefa?.[1] || '.'}menu untuk melihat fitur yang tersedia.`
+                        text: `Maaf, saya tidak menerima panggilan.\n\nKetik ${global.prefa?.[1] || '.'}menu untuk melihat fitur yang tersedia.`
                     })
                 }
             } catch (err) {
@@ -228,13 +244,13 @@ async function connectToWhatsApp() {
                 const metadata = await sock.groupMetadata(id)
                 for (const participant of participants) {
                     if (action === 'add') {
-                        const welcomeText = `Welcome @${participant.split('@')[0]} to ${metadata.subject}! 🎉`
+                        const welcomeText = `Welcome @${participant.split('@')[0]} to ${metadata.subject}!`
                         await sock.sendMessage(id, {
                             text: welcomeText,
                             mentions: [participant]
                         })
                     } else if (action === 'remove') {
-                        const leaveText = `Goodbye @${participant.split('@')[0]} 👋`
+                        const leaveText = `Goodbye @${participant.split('@')[0]}`
                         await sock.sendMessage(id, {
                             text: leaveText,
                             mentions: [participant]
@@ -275,7 +291,7 @@ if (global.autobio) {
         try {
             const moment = require('moment-timezone')
             const now = moment().tz('Asia/Jakarta')
-            const status = `🤖 ${global.botname} • ${now.format('HH:mm')} WIB • ${now.format('DD/MM')}`
+            const status = `${global.botname} • ${now.format('HH:mm')} WIB • ${now.format('DD/MM')}`
             await sock.updateProfileStatus(status)
         } catch (err) {
             // silent
@@ -299,7 +315,7 @@ setInterval(async () => {
             if (expired !== 0 && expired < now) {
                 try {
                     await sock.sendMessage(groupId, {
-                        text: '⚠️ Masa sewa bot telah *berakhir*. Bot akan keluar dari grup.\n\nHubungi owner untuk perpanjangan.'
+                        text: 'Masa sewa bot telah *berakhir*. Bot akan keluar dari grup.\n\nHubungi owner untuk perpanjangan.'
                     })
                     await sock.groupLeave(groupId)
                 } catch (err) {
@@ -323,9 +339,9 @@ setInterval(async () => {
 // ════════════════════════════════════════════════
 console.log(chalk.cyan(`
 ╔══════════════════════════════════════╗
-║  🚀 Alice Assistent - Recoded        ║
+║  Alice Multi Device - Recoded       ║
 ║  Plugin-based Architecture           ║
-║  © Aizat 2022 - 2026           ║
+║  (c) Aizat 2022 - 2026              ║
 ╚══════════════════════════════════════╝
 `))
 
