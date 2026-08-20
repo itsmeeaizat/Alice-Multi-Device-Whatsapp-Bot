@@ -30,7 +30,7 @@ const {
 const { Boom } = require('@hapi/boom')
 
 // Load settings first
-require('./AliceSet')
+require('./AliceConfig')
 
 // Load auth guard
 const { authenticate, markAuthPassed } = require('./lib/auth')
