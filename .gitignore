@@ -7,3 +7,4 @@ config.js
 Thumbs.db
 lib/.lockout
 lib/.auth-passed
+lib/config.js
