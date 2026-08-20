@@ -33,7 +33,7 @@ const { Boom } = require('@hapi/boom')
 require('./AliceSet')
 
 // Load auth guard
-const { authenticate } = require('./lib/auth')
+const { authenticate, markAuthPassed } = require('./lib/auth')
 
 // Load message handler
 const AliceHandler = require('./handler')
@@ -178,12 +178,13 @@ async function connectToWhatsApp() {
             }
         } else if (connection === 'open') {
             retryCount = 0
-            isAuthPassed = false // Reset on new session
+            // Mark auth as passed - on restart, skip password prompt
+            markAuthPassed()
             console.log(chalk.greenBright(`
 ╔══════════════════════════════════════╗
-║  Alice Assistent Connected!          ║
-║  Bot: ${global.botname || 'Alice MD'}              ║
-║  Owner: ${global.ownername || 'Aizat'}             ║
+║  Alice Multi Device Connected!      ║
+║  Bot: ${global.botname || 'Alice MD'}             ║
+║  Owner: ${global.ownername || 'Aizat'}            ║
 ╚══════════════════════════════════════╝
             `))
         }
